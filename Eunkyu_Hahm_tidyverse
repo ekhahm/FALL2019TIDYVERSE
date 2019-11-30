@@ -1,0 +1,87 @@
+---
+title: "Tidyverse Recipe"
+author: "Eunkyu Hahm"
+date: "11/28/2019"
+output:
+  html_document:
+    df_print: paged
+    highlight: kate
+    theme: united
+    toc: true
+    toc_float : true
+    pandoc_args: [
+      "--title-prefix", "Foo",
+      "--id-prefix", "Bar"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Create an Example**.  Using one or more TidyVerse packages, and any dataset from fivethirtyeight.com or Kaggle, create a programming sample “vignette” that demonstrates how to use one or more of the capabilities of the selected TidyVerse package with your selected dataset.
+
+# Data Source
+https://www.kaggle.com/spscientist/students-performance-in-exams/data
+
+
+# Load the library
+```{r}
+library(tidyverse)
+```
+
+# Read .csv file using readr package
+```{r}
+student <- read.csv("https://raw.githubusercontent.com/ekhahm/datascience/master/StudentsPerformance.csv")
+head(student)
+```
+
+# Data transformation with dplyr
+
+## Capability 1
+### Summarise and Group Cases
+
+`group_by`
+- create a "grouped" copy of a table. 
+`summarise`
+- compute table of summaries
+
+example: group by race ethinicity (group A to gourp E) and compute mean of math score by group 
+```{r}
+student %>%
+  group_by(race.ethnicity, add=FALSE) %>%
+  summarise(math_avg = mean(math.score))
+```
+
+## Capability 2 
+### Arrange Cases
+
+`arrange`
+-Order rows by values of a column or columns (low to high)
+`desc`
+-Order from high to low 
+
+example: make descending order by reading score
+```{r}
+head(student %>%
+  arrange(desc(reading.score)))
+```
+
+## Capability 3
+### Manipulate Variables
+
+`mutate`
+- compute new column(s)
+
+`select`
+- extract columns as a table
+
+
+example: compute sum of math, reading and writing score and then extract test.preparation.course and sum columns.
+```{r}
+head(student %>%
+  mutate(sum.score = math.score +reading.score + writing.score) %>%
+  select(test.preparation.course, sum.score))
+```
+
+
+
