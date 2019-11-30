@@ -42,3 +42,23 @@ filter(weather2, year == "2014")
 ggplot(weather2, aes(actual_mean_temp)) + geom_bar()
 ```
 
+**Extended by Eunkyu Hahm**
+6. dplyr group_by and summarise function
+   tidyr unite function:
+```{r}
+
+weather3 <- weather2 %>%
+  group_by(year, month) %>%
+  summarise(mean_temp = mean(actual_mean_temp)) %>%
+  unite(year_month,year,month)
+weather3
+```
+
+7. ggplot2 geom_line and goem_point function:
+```{r}
+library(ggplot2)
+ggplot(weather3, aes(x= year_month, y= mean_temp,group=1))+
+  geom_line()+
+  geom_point()
+  
+```
